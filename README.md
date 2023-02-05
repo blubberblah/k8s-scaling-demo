@@ -1,3 +1,32 @@
+# Edit: 05/02/2023
+
+## Notes to get this running with recent version of kubernetes and charts
+
+
+needed, or installation of ./charts/rabbitmq-sample-app will faile due to missing image
+`docker build . --no-cache -t theryanbaker/ryantest:latest`
+
+shell into rabbitmq server and create user with credentials from this demo:
+
+```
+rabbitmqctl add_user admin-demo dynamicscale123!
+rabbitmqctl set_user_tags admin-demo administrator
+rabbitmqctl set_permissions -p / admin-demo ".*" ".*" ".*"
+```
+
+make a portforward to stats-endpoint of the rabbitmq server - login should now be possible
+
+publish messages:
+`kubectl run publish -it --rm --image=theryanbaker/ryantest:latest --image-pull-policy=Never --restart=Never publish 50`
+
+
+prometheus query to get rabbitmq maetrics
+`rabbitmq_queue_messages{app_kubernetes_io_instance="rabbitmq-server-scaling-demo",namespace="rabbitmq-scaling-demo"}`
+```
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/namespaces/rabbitmq-scaling-demo/pods/*/rabbitmq_queue_messages
+kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/namespaces/rabbitmq-scaling-demo/pods/rabbitmq-server-scaling-demo-0/rabbitmq_queue_messages
+```  
+
 # Introduction
 
 This is a demo deployment which will illustrate leveraging a Kubernetes custom metric to scale pods based on the depth of a RabbitMQ pod.  It leverages RabbitMQ-Server, Prometheus, Prometheus Adapter, and a sample python worker and publisher script.

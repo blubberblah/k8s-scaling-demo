@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+#tail -f /dev/null
+
 if [ "$1" = 'worker' ]; then
   # Use -u to force python to not buffer output
   python -u worker.py

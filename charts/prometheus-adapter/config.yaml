@@ -15,9 +15,11 @@ logLevel: 6
 rules:
   default: false
   custom:
-  - seriesQuery: 'rabbitmq_queue_messages{kubernetes_name!="",kubernetes_namespace!=""}'
+  - seriesQuery: 'rabbitmq_queue_messages{}'
     resources:
       overrides:
-        kubernetes_namespace: {resource: "namespace"}
-        kubernetes_name: {resource: "service"}
-    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,queue="task_queue"}) by (<<.GroupBy>>)
+       # needed to change this, or kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/ wouldn't return anything:
+       # https://github.com/kubernetes-sigs/prometheus-adapter/issues/548
+       namespace: {resource: "namespace"}
+       pod: {resource: "pod"}
+    metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)

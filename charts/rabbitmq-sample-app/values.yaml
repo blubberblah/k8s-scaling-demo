@@ -7,4 +7,4 @@ replicaCount: 1
 image:
   repository: theryanbaker/ryantest
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Never

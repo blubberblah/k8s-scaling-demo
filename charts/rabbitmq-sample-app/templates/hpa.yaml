@@ -1,11 +1,11 @@
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: rabbitmq-server-scaling-demo-hpa
 spec:
   scaleTargetRef:
-    apiVersion: extensions/v1beta1
+    apiVersion: apps/v1
     kind: Deployment
     name: worker
   minReplicas: 1
@@ -17,8 +17,8 @@ spec:
         name: rabbitmq_queue_messages
       describedObject:
         apiVersion: "/v1"
-        kind: Service
-        name: rabbitmq-server-scaling-demo
+        kind: Pod
+        name: rabbitmq-server-scaling-demo-0
       target:
         type: Value
         value: 100
