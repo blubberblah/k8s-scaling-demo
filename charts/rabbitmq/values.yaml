@@ -1,19 +1,10 @@
 ---
- #rabbitmqUsername: admin-demo
- #rabbitmqPassword: dynamicscale123!
 
- ## section of specific values for rabbitmq
-rabbitmq:
-  ## RabbitMQ application username
-  ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
-  ##
+auth:
+  # https://artifacthub.io/packages/helm/bitnami/rabbitmq#common-parameters
   username: admin-demo
-
-  ## RabbitMQ application password
-  ## ref: https://github.com/bitnami/bitnami-docker-rabbitmq#environment-variables
-  ##
   password: "dynamicscale123!"
-  # existingPasswordSecret: name-of-existing-secret
+  #existingPasswordSecret: name-of-existing-secret
 
 metrics:
   enabled: true
