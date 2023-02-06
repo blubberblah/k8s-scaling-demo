@@ -12,10 +12,15 @@ service:
   port: 443
 
 logLevel: 6
+
+# explanation of values:
+# https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-adapter
+# https://github.com/kubernetes-sigs/prometheus-adapter/blob/master/docs/config.md
+# https://github.com/kubernetes-sigs/prometheus-adapter/blob/master/docs/config-walkthrough.md
 rules:
   default: false
   custom:
-  - seriesQuery: 'rabbitmq_queue_messages{}'
+  - seriesQuery: 'rabbitmq_queue_messages{namespace="rabbitmq-scaling-demo", pod="rabbitmq-server-scaling-demo-0"}'
     resources:
       overrides:
        # needed to change this, or kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1/ wouldn't return anything:
